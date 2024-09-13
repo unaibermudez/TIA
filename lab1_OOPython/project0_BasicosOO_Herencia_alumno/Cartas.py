@@ -1,6 +1,5 @@
 import random
 
-
 class Carta(object):
     """Representa una carta en este caso de la baraja espanola
     
@@ -27,11 +26,15 @@ class Carta(object):
         y 0 si equivalentes.
         """
         t1 = (self.palo, self.rango)
-        t2 = (other.palo, other.rango)
+        t2 = (otra.palo, otra.rango)
 
-        rdo = cmp(t1,t2)
-        return rdo
-
+        if t1 > t2:
+            return 1
+        elif t1 < t2:
+            return -1
+        else:
+            return 0
+            
     def __eq__(self, other):
         rdo = NotImplemented
         if isinstance(other, Carta):#TODO Anadir el codigo para reescribir el equals
@@ -108,8 +111,9 @@ class Mazo(object):
         mano: objeto destino perteneciente a la clase Mano
         num:  numero de cartas a desplazar
         """
-        for i in range(num):#TODO Anadir el codigo que falta
-            pass
+        for i in range(num):
+            mano.anadir_carta(self.pop_carta())
+        
         
     def imprimir(self):
         for idx,carta in enumerate(self.cartas):
@@ -117,17 +121,16 @@ class Mazo(object):
 
     def esta_vacio(self):
         """Devuelve True si esta vacio:  emplear len"""
-        #TODO Anadir el codigo que falta
+        return len(self.cartas) == 0
 
     def repartir_cartas(self, manos, num_cartas=999):
-        num_manos = len(manos)
         i=0
-        while i <= num_cartas and not self.esta_vacio():
-            #TODO Anadir el codigo           # coger la carta de la cima
-            mano = manos[i % num_manos]  # calcular a quien repartir
-            mano.anadir_carta(carta)           # anadir una carta a una mano
-            i+=1
-
+        for mano in manos:
+            for _ in range(num_cartas):
+                if self.esta_vacio():
+                    break
+                carta = self.pop_carta()
+                mano.anadir_carta(carta)
 class Mano(Mazo):
     """Representa una mano a jugar."""
     
@@ -135,18 +138,26 @@ class Mano(Mazo):
         self.cartas = []
         self.jugador = jugador
 
+    def anadir_carta(self, carta):
+        """Anade una carta a la mano."""
+        self.cartas.append(carta)
+
     
     def imprimir(self):
         """ Reescribir tal que indique el nombre del jugador propietario de esa mano
         asi como si esta vacia o de no estarlo las cartas que contiene:
         la mano de X esta vacia o la mano de X contiene bla bla.
         emplear el imprimir de la clase madre para imprimir la lista de cartas"""
-        
-        #TODO Anadir el codigo
+
+        if self.esta_vacio():
+            print(f"La mano de {self.jugador} esta vacia")
+        else:
+            print(f"La mano de {self.jugador} contiene:")
+            for carta in self.cartas:
+                print(carta)    
 
 class ManoPersona(Mano):
     def eliminar_parejas(self):
-
         cont = 0
 
         salir = False#chivato para salir cuando la pareja que se pretende eliminar no sea tal
@@ -196,23 +207,36 @@ def find_defining_class(obj, method_name):
 
 
 if __name__ == '__main__':
-    #ejemplo1
-    print("Ejemplo 1 mover cartas del mazo a una mano: ")
-    mazo = Mazo()
-    mazo.barajar()
-
-    mano = Mano()
-    print(find_defining_class(mano, 'barajar'))
-
-    mazo.mover_cartas(mano, 5)
-    mano.ordenarAsc()
-    mano.imprimir()
-
+    ##ejemplo1
+    #print("Ejemplo 1 mover cartas del mazo a una mano: ")
+    #mazo = Mazo()
+    ##print("Mazo antes de barajar: ")
+    ##for carta in mazo.cartas:
+    ##    print(str(carta))
+    #mazo.barajar()
+    ##
+    ##print("Mazo despues de barajar: ")
+    ##for carta in mazo.cartas:
+    ##    print(str(carta))
+    #jugador = input("Introduce nombre del jugador: ")
+    #mano = Mano(jugador)
+    #print(find_defining_class(mano, 'barajar'))
+    #
+    #numero_cartas = int(input("Introduce numero de cartas a mover: "))
+    #print(f"Vamos a mover {numero_cartas} cartas del mazo a la mano: ")
+    #mazo.mover_cartas(mano, numero_cartas)
+    #mano.imprimir()
+    #if not mano.esta_vacio():
+    #    print("Ahora vamos a ordenar las cartas de la mano por su rango de menor a mayor: ")
+    #    mano.ordenarAsc()
+    #    mano.imprimir()
+    #
+    #print("--------------------------------------------------------------------------------------------------")
     print("Ejemplo 2 repartir cartas entre 2 jugadores (7 cartas): ")
     mazo = Mazo()
     mano1 = ManoPersona('Aitzi')
     mano2 = ManoPersona('Koldo')
-    mano3 =ManoPersona('Otro')
+    mano3 =ManoPersona('Unai')
     mazo.repartir_cartas([mano1,mano2],7)
     mano1.imprimir()
     mano2.imprimir()
