@@ -36,9 +36,10 @@ class Carta(object):
             return 0
             
     def __eq__(self, other):
-        rdo = NotImplemented
-        if isinstance(other, Carta):#TODO Anadir el codigo para reescribir el equals
-            pass
+        rdo = False
+        if isinstance(other, Carta):
+            if self.palo == other.palo and self.rango == other.rango:
+                rdo = True
         return rdo
 
     def __ne__(self, other):
@@ -207,37 +208,40 @@ def find_defining_class(obj, method_name):
 
 
 if __name__ == '__main__':
-    ##ejemplo1
-    #print("Ejemplo 1 mover cartas del mazo a una mano: ")
-    #mazo = Mazo()
-    ##print("Mazo antes de barajar: ")
-    ##for carta in mazo.cartas:
-    ##    print(str(carta))
-    #mazo.barajar()
-    ##
-    ##print("Mazo despues de barajar: ")
-    ##for carta in mazo.cartas:
-    ##    print(str(carta))
-    #jugador = input("Introduce nombre del jugador: ")
-    #mano = Mano(jugador)
-    #print(find_defining_class(mano, 'barajar'))
+    #ejemplo1
+    print("Ejemplo 1 mover cartas del mazo a una mano: ")
+    mazo = Mazo()
+    #print("Mazo antes de barajar: ")
+    #for carta in mazo.cartas:
+    #    print(str(carta))
+    mazo.barajar()
     #
-    #numero_cartas = int(input("Introduce numero de cartas a mover: "))
-    #print(f"Vamos a mover {numero_cartas} cartas del mazo a la mano: ")
-    #mazo.mover_cartas(mano, numero_cartas)
-    #mano.imprimir()
-    #if not mano.esta_vacio():
-    #    print("Ahora vamos a ordenar las cartas de la mano por su rango de menor a mayor: ")
-    #    mano.ordenarAsc()
-    #    mano.imprimir()
-    #
-    #print("--------------------------------------------------------------------------------------------------")
+    #print("Mazo despues de barajar: ")
+    #for carta in mazo.cartas:
+    #    print(str(carta))
+    jugador = input("Introduce nombre del jugador: ")
+    mano = Mano(jugador)
+    print(find_defining_class(mano, 'barajar'))
+    
+    numero_cartas = int(input("Introduce numero de cartas a mover: "))
+    print(f"Vamos a mover {numero_cartas} cartas del mazo a la mano: ")
+    mazo.mover_cartas(mano, numero_cartas)
+    mano.imprimir()
+    if not mano.esta_vacio():
+        print("Ahora vamos a ordenar las cartas de la mano por su rango de menor a mayor: ")
+        mano.ordenarAsc()
+        mano.imprimir()
+    
+    print("--------------------------------------------------------------------------------------------------")
     print("Ejemplo 2 repartir cartas entre 2 jugadores (7 cartas): ")
     mazo = Mazo()
     mano1 = ManoPersona('Aitzi')
     mano2 = ManoPersona('Koldo')
     mano3 =ManoPersona('Unai')
     mazo.repartir_cartas([mano1,mano2],7)
+    mano1.ordenarAsc()
+    mano2.ordenarAsc()
+    mano3.ordenarAsc()
     mano1.imprimir()
     mano2.imprimir()
     mano3.imprimir()
