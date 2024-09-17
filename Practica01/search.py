@@ -90,12 +90,59 @@ def depthFirstSearch(problem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
 
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from game import Directions
+    movement_dict = {
+        "North": Directions.NORTH,
+        "South": Directions.SOUTH,
+        "East": Directions.EAST,
+        "West": Directions.WEST
+    }
+
+    print("Start:", problem.getStartState())
+    print("Are we in the goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+
+    current = problem.getStartState()
+    print("Current Position:", current)
+    visited = []
+    actions = []
+    # store the successors of the start state on a stack
+    stack = []
+    print(f" we have {len(problem.getSuccessors(problem.getStartState()))} successors")
+    #for successor in problem.getSuccessors(problem.getStartState()):
+    #    stack.append(successor)
+    #for value in stack:
+    #    print(value)
+
+    print("---------- we start the loop ----------")
+    while not problem.isGoalState(current):
+        if current not in visited:
+            print("#################################")
+            # add the current node to the visited list
+            visited.append(current)
+            print("Visited:", visited)
+            print("We are in:", current)
+            print(f"We have {len(problem.getSuccessors(current))} successors:")
+            for successor in problem.getSuccessors(current):
+                if successor[0] not in visited:
+                    stack.append(successor)
+            for value in stack:
+                print(f"{value} added to the stack")
+            # get the last element of the stack
+            current = stack[-1][0]
+            print("We move to:", current)
+            # add the action to the actions list
+            actions.append(movement_dict[stack[-1][1]])
+            stack.pop()
+            print("Actions:", actions)
+            print("Visited:", visited)
+            print("Stack:", stack)
+
+    print("loop finnish")
+    print("Actions:", actions)
+    return actions
 
 
 def breadthFirstSearch(problem):
