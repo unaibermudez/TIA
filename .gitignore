@@ -1,2 +1,5 @@
 # Ignore Anaconda installer
 Anaconda*.sh
+
+# Ignore pycache
+__pycache__/
