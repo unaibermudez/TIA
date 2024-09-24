@@ -83,15 +83,8 @@ def tinyMazeSearch(problem):
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
     """
-    "*** YOUR CODE HERE ***"
+
     from game import Directions
     movement_dict = {
         "North": Directions.NORTH,
@@ -107,17 +100,21 @@ def depthFirstSearch(problem):
     current = problem.getStartState()
     print("Current Position:", current)
     visited = []
-    actions = []
-    # store the successors of the start state on a stack
-    stack = []
-    print(f" we have {len(problem.getSuccessors(problem.getStartState()))} successors")
-    #for successor in problem.getSuccessors(problem.getStartState()):
-    #    stack.append(successor)
-    #for value in stack:
-    #    print(value)
-
+    
+    # store the successors of the start state on a stack as (position, actions)
+    stack = [(current, [])]
+    print(f"we have {len(problem.getSuccessors(problem.getStartState()))} successors")
+    
     print("---------- we start the loop ----------")
-    while not problem.isGoalState(current):
+    while stack:
+        current, actions = stack.pop()  # get the last element from the stack
+        print("We move to:", current)
+
+        # check if we reached the goal
+        if problem.isGoalState(current):
+            print("Goal found!")
+            return actions
+
         if current not in visited:
             print("#################################")
             # add the current node to the visited list
@@ -125,24 +122,22 @@ def depthFirstSearch(problem):
             print("Visited:", visited)
             print("We are in:", current)
             print(f"We have {len(problem.getSuccessors(current))} successors:")
+            
+            # iterate over successors
             for successor in problem.getSuccessors(current):
-                if successor[0] not in visited:
-                    stack.append(successor)
+                next_position, direction, _ = successor
+                if next_position not in visited:
+                    # append the successor position and the new action list to the stack
+                    new_actions = actions + [movement_dict[direction]]
+                    stack.append((next_position, new_actions))
+
+            # debug print of the stack
             for value in stack:
                 print(f"{value} added to the stack")
-            # get the last element of the stack
-            current = stack[-1][0]
-            print("We move to:", current)
-            # add the action to the actions list
-            actions.append(movement_dict[stack[-1][1]])
-            stack.pop()
-            print("Actions:", actions)
-            print("Visited:", visited)
-            print("Stack:", stack)
 
-    print("loop finnish")
-    print("Actions:", actions)
-    return actions
+    print("Loop finished without finding the goal")
+    return []  # return empty if no solution is found
+
 
 
 def breadthFirstSearch(problem):
