@@ -84,58 +84,50 @@ def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
     """
-
-    from game import Directions
-    movement_dict = {
-        "North": Directions.NORTH,
-        "South": Directions.SOUTH,
-        "East": Directions.EAST,
-        "West": Directions.WEST
-    }
-
-    print("Start:", problem.getStartState())
-    print("Are we in the goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    #print("Start:", problem.getStartState())
+    #print("Are we in the goal?", problem.isGoalState(problem.getStartState()))
+    #print("Start's successors:", problem.getSuccessors(problem.getStartState()))
 
     current = problem.getStartState()
-    print("Current Position:", current)
+    #print("Current Position:", current)
     visited = []
     
     # store the successors of the start state on a stack as (position, actions)
     stack = [(current, [])]
-    print(f"we have {len(problem.getSuccessors(problem.getStartState()))} successors")
+    #print(f"we have {len(problem.getSuccessors(problem.getStartState()))} successors")
     
-    print("---------- we start the loop ----------")
+    #print("---------- we start the loop ----------")
     while stack:
         current, actions = stack.pop()  # get the last element from the stack
-        print("We move to:", current)
+        #print("We move to:", current)
 
         # check if we reached the goal
         if problem.isGoalState(current):
-            print("Goal found!")
+            #print("Goal found!")
+            #print("Actions:", actions)
             return actions
 
         if current not in visited:
-            print("#################################")
+            #print("#################################")
             # add the current node to the visited list
             visited.append(current)
-            print("Visited:", visited)
-            print("We are in:", current)
-            print(f"We have {len(problem.getSuccessors(current))} successors:")
+            #print("Visited:", visited)
+            #print("We are in:", current)
+            #print(f"We have {len(problem.getSuccessors(current))} successors:")
             
             # iterate over successors
             for successor in problem.getSuccessors(current):
                 next_position, direction, _ = successor
                 if next_position not in visited:
                     # append the successor position and the new action list to the stack
-                    new_actions = actions + [movement_dict[direction]]
+                    new_actions = actions + [direction]
                     stack.append((next_position, new_actions))
 
             # debug print of the stack
-            for value in stack:
-                print(f"{value} added to the stack")
+            #for value in stack:
+                #print(f"{value} added to the stack")
 
-    print("Loop finished without finding the goal")
+    #print("Loop finished without finding the goal")
     return []  # return empty if no solution is found
 
 
